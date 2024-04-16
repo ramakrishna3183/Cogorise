@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Online Quiz App</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    #container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+    .question {
+        margin-bottom: 20px;
+    }
+    .options {
+        display: flex;
+        justify-content: center;
+    }
+    .option {
+        margin: 0 10px;
+        padding: 10px 20px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .option:hover {
+        background-color: #f0f0f0;
+    }
+</style>
+</head>
+<body>
+<div id="container">
+    <h2>Online Quiz App</h2>
+    <label for="category">Select a category:</label>
+    <select id="category">
+        <option value="1">Math</option>
+        <option value="2">Science</option>
+        <option value="3">History</option>
+    </select><br><br>
+    <div class="question" id="question"></div>
+    <div class="options" id="options"></div><br>
+    <button onclick="nextQuestion()">Next Question</button>
+    <div id="score"></div>
+</div>
+
+<script>
+var currentQuestionIndex = 0;
+var score = 0;
+
+var questions = [
+    {
+        question: "What is 2 + 2?",
+        options: ["3", "4", "5", "6"],
+        answer: "4"
+    },
+    {
+        question: "What is the capital of France?",
+        options: ["London", "Berlin", "Madrid", "Paris"],
+        answer: "Paris"
+    },
+    {
+        question: "Who discovered gravity?",
+        options: ["Isaac Newton", "Albert Einstein", "Galileo Galilei", "Thomas Edison"],
+        answer: "Isaac Newton"
+    }
+];
+
+function loadQuestion() {
+    var questionElement = document.getElementById("question");
+    var optionsElement = document.getElementById("options");
+    
+    questionElement.textContent = questions[currentQuestionIndex].question;
+    optionsElement.innerHTML = "";
+
+    questions[currentQuestionIndex].options.forEach(function(option) {
+        var optionButton = document.createElement("button");
+        optionButton.textContent = option;
+        optionButton.className = "option";
+        optionButton.onclick = function() {
+            checkAnswer(option);
+        };
+        optionsElement.appendChild(optionButton);
+    });
+}
+
+function checkAnswer(selectedOption) {
+    var correctAnswer = questions[currentQuestionIndex].answer;
+    if (selectedOption === correctAnswer) {
+        score++;
+    }
+}
+
+function nextQuestion() {
+    currentQuestionIndex++;
+    if (currentQuestionIndex < questions.length) {
+        loadQuestion();
+    } else {
+        showScore();
+    }
+}
+
+function showScore() {
+    var container = document.getElementById("container");
+    container.removeChild(document.getElementById("question"));
+    container.removeChild(document.getElementById("options"));
+    container.removeChild(document.querySelector("button"));
+    document.getElementById("score").textContent = "Your Score: " + score + "/" + questions.length;
+}
+    
+document.addEventListener("DOMContentLoaded", loadQuestion);
+</script>
+</body>
+</html>
